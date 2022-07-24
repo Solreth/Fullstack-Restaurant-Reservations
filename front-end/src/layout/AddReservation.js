@@ -24,28 +24,34 @@ export default function AddReservation() {
     formData.people = parseInt(formData.people);
     const abortController = new AbortController();
 
-    const bookedDate = new Date(formData.reservation_date);
+    // const bookedDate = new Date(formData.reservation_date);
 
-    if (bookedDate.getDay() === 1) {
-      return setReservationsError({
-        message: "Sorry! We're closed on this day!",
-      });
-    }
+    // if (bookedDate.getDay() === 1) {
+    //   return setReservationsError({
+    //     message: "Sorry! We're closed on this day!",
+    //   });
+    // }
 
-    const currentDate = new Date();
+    //const currentDate = new Date();
 
-    if (bookedDate > currentDate) {
+    // if (bookedDate > currentDate) {
+
+    try {
       setReservationsError({});
-      await createReservation(formData, abortController.signal).catch(
-        setReservationsError
-      );
+      await createReservation(formData, abortController.signal);
       history.push(`/dashboard?date=${formData.reservation_date}`);
-    } else {
-      setReservationsError({
-        message:
-          "Sorry! We don't have a time machine! Try booking a reservation in the future!",
-      });
+    } catch (error) {
+      setReservationsError(error);
     }
+    //   setReservationsError
+    // );
+
+    //   } else {
+    //     setReservationsError({
+    //       message:
+    //         "Sorry! We don't have a time machine! Try booking a reservation in the future!",
+    //     });
+    //   }
   }
 
   function changeHandler({ target }) {
