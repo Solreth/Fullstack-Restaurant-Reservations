@@ -1,36 +1,36 @@
 import React, { useState } from "react";
-import { createReservation } from "../utils/api";
+import { createTable } from "../utils/api";
 import { Link, useHistory } from "react-router-dom";
 import ErrorAlert from "./ErrorAlert";
-import FormComponent from "./FormComponent";
+import FormComponent from "./TableFormComponent";
 
-export default function AddReservation() {
+export default function AddTable() {
   const initialData = {
-    first_name: "",
-    last_name: "",
-    mobile_number: "",
-    reservation_date: "",
-    reservation_time: "",
-    people: "",
+    table_name: "",
+    capacity: "",
   };
 
   const [formData, setFormData] = useState({ ...initialData });
-  const [reservationsError, setReservationsError] = useState({});
+  const [tablesError, setTablesError] = useState({});
 
   const history = useHistory();
 
   async function submitHandler(event) {
     event.preventDefault();
-    formData.people = parseInt(formData.people);
+    formData.capacity = parseInt(formData.capacity);
     const abortController = new AbortController();
 
     try {
-      setReservationsError({});
-      await createReservation(formData, abortController.signal);
-      history.push(`/dashboard?date=${formData.reservation_date}`);
+      setTablesError({});
+      await createTable(formData, abortController.signal);
+      history.push(`/dashboard`);
     } catch (error) {
-      setReservationsError(error);
+      setTablesError(error);
     }
+  }
+
+  function cancelHandler() {
+    history.goBack();
   }
 
   function changeHandler({ target }) {
@@ -45,20 +45,21 @@ export default function AddReservation() {
             <Link to="/">Home</Link>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            Create Reservation
+            Create Table
           </li>
         </ol>
       </nav>
 
       <div className="row container">
-        <h1>Add Reservation</h1>
+        <h1>Add Table</h1>
       </div>
       <FormComponent
         submitHandler={submitHandler}
         changeHandler={changeHandler}
+        cancelHandler={cancelHandler}
         formData={formData}
       />
-      {reservationsError.message && <ErrorAlert error={reservationsError} />}
+      {tablesError.message && <ErrorAlert error={tablesError} />}
     </>
   );
 }
