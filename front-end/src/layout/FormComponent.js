@@ -9,7 +9,7 @@ export default function FormComponent({
 }) {
   return (
     <form onSubmit={submitHandler} className="container">
-      <h4 className="mt-3 mb-2">First Name</h4>
+      <h4 className="mt-3 mb-2">Your Reservation Awaits!</h4>
       <input
         type="text"
         name="first_name"
@@ -57,6 +57,7 @@ export default function FormComponent({
         name="people"
         placeholder="Party Size"
         required={true}
+        min="1"
         value={formData.people}
         onChange={changeHandler}
       />
