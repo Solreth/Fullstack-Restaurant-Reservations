@@ -113,7 +113,6 @@ export async function seatTable(reservation_id, table_id, signal) {
 }
 
 export async function finishTable(table_id) {
-  console.log(table_id);
   const url = `${API_BASE_URL}/tables/${table_id}/seat`;
   const options = {
     method: "DELETE",
@@ -142,7 +141,6 @@ export async function cancelReservation(data, reservation_id, signal) {
 }
 
 export async function editReservation(data, signal) {
-  console.log("Twoose", data);
   const url = `${API_BASE_URL}/reservations/${data.reservation_id}`;
 
   const options = {

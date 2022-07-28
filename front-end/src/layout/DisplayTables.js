@@ -1,6 +1,8 @@
 import { finishTable } from "../utils/api";
 
 export default function DisplayTables({ tables, loadDashboard }) {
+  console.log(tables, "phwoar");
+
   const finishHandler = async (event) => {
     const tableId = event.target.getAttribute("data-table-id-finish");
     console.log("Fuck those", tableId);
@@ -27,9 +29,9 @@ export default function DisplayTables({ tables, loadDashboard }) {
           <div name="capacity">{table.capacity}</div>
         </td>
         <td data-table-id-status={table.table_id}>
-          {table.reservation_id === null ? "Free" : "Occupied"}
+          <p>{table.reservation_id ? "occupied" : "free"}</p>
         </td>
-        {table.reservation_id && (
+        {table.reservation_id ? (
           <td>
             <button
               type="button"
@@ -40,7 +42,7 @@ export default function DisplayTables({ tables, loadDashboard }) {
               Finish
             </button>
           </td>
-        )}
+        ) : null}
       </tr>
     );
   });

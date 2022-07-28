@@ -44,9 +44,8 @@ export default function EditReservation() {
 
     try {
       setReservationError({});
-      console.log(reservation, "fuck me");
       await editReservation(reservation, abortController.signal);
-      history.goBack();
+      history.push(`/dashboard?date=${reservation.reservation_date}`);
     } catch (error) {
       setReservationError(error);
     }

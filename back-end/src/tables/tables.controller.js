@@ -7,12 +7,7 @@ async function list(req, res) {
 }
 
 async function create(req, res, next) {
-  const { table_name, capacity } = req.body.data;
-
-  const result = await service.create({
-    table_name,
-    capacity,
-  });
+  const result = await service.create(req.body.data);
   res.status(201);
   res.json({ data: result });
 }
