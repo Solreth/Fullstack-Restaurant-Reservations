@@ -5,10 +5,10 @@ function containsAnyLetter(str) {
   return /[a-zA-Z]/.test(str);
 }
 
-async function list(req, res, next) {
+async function list(req, res) {
   if (req.query.mobile_number) {
     const data = await service.search(req.query.mobile_number);
-    res.json({ data });
+    return res.json({ data });
   }
 
   const data = await service.list(req.query.date);

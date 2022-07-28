@@ -1,5 +1,20 @@
-export default function DisplayTables({ tables }) {
-  const output = tables.map((table, index) => {
+import { finishTable } from "../utils/api";
+
+export default function DisplayTables({ tables, loadDashboard }) {
+  const finishHandler = async (event) => {
+    const tableId = event.target.getAttribute("data-table-id-finish");
+    console.log("Fuck those", tableId);
+    if (
+      window.confirm(
+        "Is this table ready to seat new guests? This cannot be undone."
+      )
+    ) {
+      await finishTable(tableId);
+      loadDashboard();
+    }
+  };
+
+  return tables.map((table, index) => {
     return (
       <tr key={index}>
         <td>
@@ -14,8 +29,19 @@ export default function DisplayTables({ tables }) {
         <td data-table-id-status={table.table_id}>
           {table.reservation_id === null ? "Free" : "Occupied"}
         </td>
+        {table.reservation_id && (
+          <td>
+            <button
+              type="button"
+              data-table-id-finish={table.table_id}
+              onClick={finishHandler}
+              name="Finish"
+            >
+              Finish
+            </button>
+          </td>
+        )}
       </tr>
     );
   });
-  return output;
 }

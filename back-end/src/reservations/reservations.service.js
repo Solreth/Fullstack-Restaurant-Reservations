@@ -5,6 +5,7 @@ async function list(date) {
     .select("*")
     .where({ reservation_date: date })
     .whereNot("reservations.status", "finished")
+    .whereNot("reservations.status", "cancelled")
     .orderBy("reservation_time", "asc");
 }
 

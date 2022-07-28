@@ -97,8 +97,8 @@ const hasAvailability = (req, res, next) => {
 
 async function destroy(req, res, next) {
   if (res.locals.table.reservation_id) {
-    await service.destroy(res.locals.table);
-    res.sendStatus(200);
+    const clearedTables = await service.destroy(res.locals.table);
+    res.json({ data: clearedTables });
   } else next({ status: 400, message: "table is not occupied" });
 }
 
