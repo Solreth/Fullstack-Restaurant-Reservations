@@ -85,7 +85,10 @@ function Dashboard({ date, reservations, setReservations, tables, setTables }) {
                 </tr>
               </thead>
               <tbody>
-                <DisplayReservations reservations={reservations} />
+                <DisplayReservations
+                  reservations={reservations}
+                  setReservationsError={setReservationsError}
+                />
               </tbody>
             </table>
           </div>
@@ -102,7 +105,7 @@ function Dashboard({ date, reservations, setReservations, tables, setTables }) {
                 </tr>
               </thead>
               <tbody>
-                <DisplayTables tables={tables} />
+                <DisplayTables tables={tables} loadDashboard={loadDashboard} />
               </tbody>
             </table>
           </div>
