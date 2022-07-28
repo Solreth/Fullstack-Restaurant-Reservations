@@ -1,11 +1,8 @@
 import { finishTable } from "../utils/api";
 
 export default function DisplayTables({ tables, loadDashboard }) {
-  console.log(tables, "phwoar");
-
   const finishHandler = async (event) => {
     const tableId = event.target.getAttribute("data-table-id-finish");
-    console.log("Fuck those", tableId);
     if (
       window.confirm(
         "Is this table ready to seat new guests? This cannot be undone."
