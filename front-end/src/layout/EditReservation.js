@@ -8,7 +8,16 @@ import { readReservation } from "../utils/api";
 export default function EditReservation() {
   const { reservation_id } = useParams();
 
-  const [reservation, setReservation] = useState([]);
+  const initialData = {
+    first_name: "",
+    last_name: "",
+    mobile_number: "",
+    reservation_date: "",
+    reservation_time: "",
+    people: "",
+  };
+
+  const [reservation, setReservation] = useState(initialData);
   const [reservationError, setReservationError] = useState({});
 
   const history = useHistory();
