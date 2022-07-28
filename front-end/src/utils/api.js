@@ -140,3 +140,16 @@ export async function cancelReservation(data, reservation_id, signal) {
   };
   return await fetchJson(url, options, {});
 }
+
+export async function editReservation(data, signal) {
+  console.log("Twoose", data);
+  const url = `${API_BASE_URL}/reservations/${data.reservation_id}`;
+
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}

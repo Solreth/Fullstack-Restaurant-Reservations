@@ -11,7 +11,6 @@ export default function DisplayReservations({
     const reservation_id = event.target.getAttribute(
       "data-reservation-id-cancel"
     );
-    console.log("Fuck this", reservation_id);
     try {
       if (
         window.confirm(
@@ -30,16 +29,7 @@ export default function DisplayReservations({
       setReservationsError(error);
     }
   }
-  // const finishHandler = async (tableId) => {
-  //   if (
-  //     window.confirm(
-  //       "Is this table ready to seat new guests? This cannot be undone."
-  //     )
-  //   ) {
-  //     await finishTable(tableId);
-  //     loadDashboard();
-  //   }
-  // };
+
   const output = reservations.map((reservation, index) => {
     return (
       <tr key={index}>

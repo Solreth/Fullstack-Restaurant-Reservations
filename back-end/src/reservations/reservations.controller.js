@@ -50,9 +50,12 @@ const hasReservationDate = (req, res, next) => {
   if (reservation_date && !containsAnyLetter(reservation_date)) {
     const date = new Date(reservation_date);
     if (date.getDay() === 1) {
-      next({ status: 400, message: "Sorry! We're closed on this day!" });
+      next({
+        status: 400,
+        message: "Sorry! We're closed on this Tuesdays! Try again!",
+      });
     }
-    if (new Date() > date) {
+    if (Date.parse(reservation_date) < Date.now()) {
       next({
         status: 400,
         message:
@@ -67,16 +70,19 @@ const hasReservationDate = (req, res, next) => {
 const hasReservationTime = (req, res, next) => {
   const { data: { reservation_time } = {} } = req.body;
   if (reservation_time && !containsAnyLetter(reservation_time)) {
-    if (
-      reservation_time.replace(":", "") >= 1030 &&
-      reservation_time.replace(":", "") <= 2130
-    ) {
-      return next();
-    } else
+    if (reservation_time.replace(":", "") < 1030) {
+      ("Sorry, reservations can not be made before these hours!");
       next({
         status: 400,
-        message: "Sorry, reservations can not be made at these hours!",
+        message: "Sorry, reservations can not be made before these hours!",
       });
+    }
+    if (reservation_time.replace(":", "") > 2130) {
+      next({
+        status: 400,
+        message: "Sorry, reservations can not be made after these hours!",
+      });
+    } else return next();
   }
   return next({ status: 400, message: "a reservation_time is required" });
 };
