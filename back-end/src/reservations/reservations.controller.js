@@ -55,11 +55,11 @@ const hasReservationDate = (req, res, next) => {
         message: "Sorry! We're closed on this Tuesdays! Try again!",
       });
     }
+
     if (Date.parse(reservation_date) < Date.now()) {
       next({
         status: 400,
-        message:
-          "Sorry! We don't have a time machine! Try booking a reservation in the future!",
+        message: "Try booking a reservation further in the future!",
       });
     }
     return next();
@@ -73,13 +73,13 @@ const hasReservationTime = (req, res, next) => {
     if (reservation_time.replace(":", "") < 1030) {
       next({
         status: 400,
-        message: "Sorry, reservations can not be made before these hours!",
+        message: "Sorry, reservations can not be made before 10:30am!",
       });
     }
     if (reservation_time.replace(":", "") > 2130) {
       next({
         status: 400,
-        message: "Sorry, reservations can not be made after these hours!",
+        message: "Sorry, reservations can not be made after 9:30pm!",
       });
     } else {
       return next();

@@ -65,24 +65,43 @@ export default function DisplayReservations({
             {reservation.status}
           </div>
         </td>
-        <td>
-          <button
-            data-reservation-id-cancel={reservation.reservation_id}
-            name="Cancel"
-            onClick={cancelHandler}
-          >
-            Cancel
-          </button>
-        </td>
-        <td>
-          <Link to={`/reservations/${reservation.reservation_id}/edit`}>
-            <button name="Edit">Edit</button>
-          </Link>
-        </td>
+        {reservation.status === "booked" && (
+          <td>
+            <button
+              data-reservation-id-cancel={reservation.reservation_id}
+              name="Cancel"
+              onClick={cancelHandler}
+              className="btn btn-warning"
+              style={{ fontSize: "14px" }}
+            >
+              <span className="oi oi-x"></span>
+              &nbsp;Cancel
+            </button>
+          </td>
+        )}
+        {reservation.status !== "cancelled" && reservation.status !== "seated" && (
+          <td>
+            <Link to={`/reservations/${reservation.reservation_id}/edit`}>
+              <button
+                name="Edit"
+                className="btn btn-secondary"
+                style={{ fontSize: "14px" }}
+              >
+                <span className="oi oi-pencil"></span>&nbsp; Edit
+              </button>
+            </Link>
+          </td>
+        )}
         {reservation.status === "booked" && (
           <td>
             <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-              <button name="Seat">Seat</button>
+              <button
+                name="Seat"
+                className="btn btn-success"
+                style={{ fontSize: "14px" }}
+              >
+                <span className="oi oi-check"></span>&nbsp; Seat
+              </button>
             </Link>
           </td>
         )}

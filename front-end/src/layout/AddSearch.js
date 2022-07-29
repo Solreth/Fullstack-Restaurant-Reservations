@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { searchNumber } from "../utils/api";
 import DisplayReservations from "./DisplayReservations";
 import ErrorAlert from "./ErrorAlert";
@@ -36,6 +37,16 @@ export default function AddSearch() {
   return (
     <>
       <main>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <Link to="/">Home</Link>
+            </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              Search Reservation
+            </li>
+          </ol>
+        </nav>
         <h1>Search Reservations</h1>
         <form onSubmit={submitHandler}>
           <fieldset>
@@ -54,7 +65,8 @@ export default function AddSearch() {
                   ></input>
                   <div className="input-group-append">
                     <button type="submit" className="btn btn-primary">
-                      <span className="oi oi-magnifying-glass"></span> Find
+                      <span className="oi oi-magnifying-glass"></span>&nbsp;
+                      Find
                     </button>
                   </div>
                 </div>

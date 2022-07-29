@@ -51,7 +51,7 @@ export default function AddTable() {
       </nav>
 
       <div className="row container">
-        <h1>Add Table</h1>
+        <h1>Create Table</h1>
       </div>
       <FormComponent
         submitHandler={submitHandler}

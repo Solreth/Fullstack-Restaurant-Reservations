@@ -52,7 +52,7 @@ function Dashboard({ date, reservations, setReservations, tables, setTables }) {
     <main>
       <h1>Dashboard</h1>
       <div className="row">
-        <div className="col-md-6 col-lg-6 col-sm-12">
+        <div className="col-md-8 col-lg-8 col-sm-12">
           <div className="d-md-flex mb-3">
             <h4 className="box-title mb-0">Reservations for {pageDate}</h4>
           </div>
@@ -93,7 +93,7 @@ function Dashboard({ date, reservations, setReservations, tables, setTables }) {
             </table>
           </div>
         </div>
-        <div className="col-md-6 col-lg-6 col-sm-12">
+        <div className="col-md-4 col-lg-4 col-sm-12">
           <div className="table-responsive">
             <table className="table no-wrap">
               <thead>

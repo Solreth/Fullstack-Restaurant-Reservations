@@ -35,8 +35,9 @@ export default function DisplayTables({ tables, loadDashboard }) {
               data-table-id-finish={table.table_id}
               onClick={finishHandler}
               name="Finish"
+              className="btn btn-danger"
             >
-              Finish
+              <span className="oi oi-book"></span>&nbsp; Finish
             </button>
           </td>
         ) : null}
