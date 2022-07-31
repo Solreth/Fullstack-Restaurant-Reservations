@@ -3,10 +3,11 @@ import React from "react";
 export default function FormComponent({
   submitHandler,
   changeHandler,
-  table,
   formData,
   cancelHandler,
 }) {
+  //formats the page
+
   return (
     <form onSubmit={submitHandler} className="container">
       <fieldset>

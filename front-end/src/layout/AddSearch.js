@@ -13,10 +13,13 @@ export default function AddSearch() {
   const [reservationsError, setReservationsError] = useState({});
   const [reservations, setReservations] = useState([]);
 
+  // changes the form data to match the name and value of the input field being used
+
   function changeHandler({ target }) {
     setFormData({ ...formData, [target.name]: target.value });
   }
 
+  // parses the mobile number and returns all reservations with that #
   async function submitHandler(event) {
     event.preventDefault();
     const abortController = new AbortController();
@@ -29,16 +32,18 @@ export default function AddSearch() {
         abortController.signal
       );
       setReservations(result);
+      return () => abortController.abort();
     } catch (error) {
       setReservationsError(error);
     }
   }
 
+  // formats the page
   return (
     <>
       <main>
         <nav aria-label="breadcrumb">
-          <ol className="breadcrumb">
+          <ol className="breadcrumb" style={{ backgroundColor: "#1b3e23" }}>
             <li className="breadcrumb-item">
               <Link to="/">Home</Link>
             </li>

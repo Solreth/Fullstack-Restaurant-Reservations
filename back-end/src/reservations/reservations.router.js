@@ -8,6 +8,8 @@ const router = require("express").Router();
 const controller = require("./reservations.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
 
+// ([0-9]+) ensures that the only acceptable id variable is numeric
+
 router
   .route("/:reservation_id([0-9]+)/status")
   .put(controller.updateStatus)

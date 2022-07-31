@@ -22,6 +22,9 @@ export default function EditReservation() {
 
   const history = useHistory();
 
+  /* rerenders the page when altering reservationError or Reservation Id
+   checks for and sets the reservation */
+
   useEffect(() => {
     const abortController = new AbortController();
     const checkReservation = async () => {
@@ -37,6 +40,9 @@ export default function EditReservation() {
     return () => abortController.abort;
   }, [reservationError, reservation_id]);
 
+  /* parses the # of people from string to a number and then updates the reservation
+ returning back to the dashboard at the reservations date*/
+
   async function submitHandler(event) {
     event.preventDefault();
     reservation.people = parseInt(reservation.people);
@@ -46,19 +52,24 @@ export default function EditReservation() {
       setReservationError({});
       await editReservation(reservation, abortController.signal);
       history.push(`/dashboard?date=${reservation.reservation_date}`);
+      return () => abortController.abort();
     } catch (error) {
       setReservationError(error);
     }
   }
 
+  // changes the form data to match the name and value of the input field being used
+
   function changeHandler({ target }) {
     setReservation({ ...reservation, [target.name]: target.value });
   }
 
+  // formats the page
+
   return (
     <>
       <nav aria-label="breadcrumb">
-        <ol className="breadcrumb">
+        <ol className="breadcrumb" style={{ backgroundColor: "#1b3e23" }}>
           <li className="breadcrumb-item">
             <Link to="/">Home</Link>
           </li>

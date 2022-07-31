@@ -5,7 +5,11 @@ export default function MapTableOptions() {
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState([]);
 
+  // rerenders the tables on page load
+
   useEffect(loadTables, []);
+
+  // used to display the tables!
 
   function loadTables() {
     const abortController = new AbortController();
@@ -14,6 +18,8 @@ export default function MapTableOptions() {
     return () => abortController.abort();
   }
 
+  // maps an array of tables out with unique keys
+
   const output = tables.map((table, index) => {
     return (
       <option key={index} value={table.table_id}>
@@ -21,6 +27,8 @@ export default function MapTableOptions() {
       </option>
     );
   });
+
+  // formats the page
 
   return (
     <>

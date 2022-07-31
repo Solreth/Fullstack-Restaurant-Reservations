@@ -19,6 +19,8 @@ export default function AddReservation() {
 
   const history = useHistory();
 
+  // converts the string of people to a number, then creates a reservation.
+
   async function submitHandler(event) {
     event.preventDefault();
     formData.people = parseInt(formData.people);
@@ -28,19 +30,24 @@ export default function AddReservation() {
       setReservationsError({});
       await createReservation(formData, abortController.signal);
       history.push(`/dashboard?date=${formData.reservation_date}`);
+      return () => abortController.abort();
     } catch (error) {
       setReservationsError(error);
     }
   }
 
+  // changes the form data to match the name and value of the input field being used
+
   function changeHandler({ target }) {
     setFormData({ ...formData, [target.name]: target.value });
   }
 
+  //page formatting
+
   return (
     <>
       <nav aria-label="breadcrumb">
-        <ol className="breadcrumb">
+        <ol className="breadcrumb" style={{ backgroundColor: "#1b3e23" }}>
           <li className="breadcrumb-item">
             <Link to="/">Home</Link>
           </li>

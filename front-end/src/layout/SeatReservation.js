@@ -12,6 +12,8 @@ export default function SeatReservation() {
   const [selectedTableId, setSelectedTableId] = useState(3);
   const history = useHistory();
 
+  //rerenders the page on changes made to reservationError and reservation id
+  // reads and sets a reservation to the use state
   useEffect(() => {
     const abortController = new AbortController();
     const checkReservation = async () => {
@@ -27,9 +29,13 @@ export default function SeatReservation() {
     return () => abortController.abort;
   }, [reservationError, reservation_id]);
 
+  // returns to the previous page
+
   function cancelHandler() {
     history.goBack();
   }
+
+  // sets a table to seated and returns to the dashboard
 
   async function submitHandler(event) {
     event.preventDefault();
@@ -37,15 +43,20 @@ export default function SeatReservation() {
     try {
       setReservationError({});
       await seatTable(reservation_id, selectedTableId, abortController.signal);
-      history.push("/dashboard");
+      history.push(`/dashboard?date=${reservation.reservation_date}`);
+      return () => abortController.abort();
     } catch (error) {
       setReservationError(error);
     }
   }
 
+  //adjusts the state for the table ID to the option selected in the dropdown
+
   function changeHandler({ target }) {
     setSelectedTableId(Number(target.value));
   }
+
+  //formats the page
 
   return (
     <>

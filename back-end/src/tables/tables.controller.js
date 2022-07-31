@@ -1,10 +1,14 @@
 const service = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+// lists all the tables.
+
 async function list(req, res) {
   const data = await service.list();
   res.json({ data });
 }
+
+// pulls a pre-assigned table from the data to fulfill a post request to the database.
 
 async function create(req, res, next) {
   const result = await service.create(req.body.data);
@@ -12,11 +16,15 @@ async function create(req, res, next) {
   res.json({ data: result });
 }
 
+// Validator checks for data in the req.body
+
 function hasData(req, res, next) {
   if (!req.body.data) {
     next({ status: 400, message: "Table lacks required data." });
   } else next();
 }
+
+//Validator checks for data.table_name in the req.body
 
 const hasTableName = (req, res, next) => {
   const { data: { table_name } = {} } = req.body;
@@ -26,8 +34,13 @@ const hasTableName = (req, res, next) => {
   return next({ status: 400, message: "a table_name is required" });
 };
 
+//Validator checks for data.capacity in the req.body
+
 const hasCapacity = (req, res, next) => {
   const { data: { capacity } = {} } = req.body;
+
+  //verifies the capacity is a number
+
   if (capacity && typeof capacity === "number") {
     return next();
   }
@@ -42,6 +55,10 @@ async function update(req, res) {
   res.json({ data });
 }
 
+/* pulls from the paramaters a table ID and checks its existence
+ if it exists, we submit the table to an accessible local variable
+ and proceed */
+
 async function tableExists(req, res, next) {
   const table = await service.read(req.params.table_id);
 
@@ -54,6 +71,10 @@ async function tableExists(req, res, next) {
     message: `Table ${req.params.table_id} cannot be found.`,
   });
 }
+
+/* pulls from the body data a reservation ID and checks its existence
+ if a reservation ID is found,we check if the reservation exists, we 
+ submit the table to an accessible local variable and proceed */
 
 async function reservationExists(req, res, next) {
   const { data: { reservation_id } = {} } = req.body;
@@ -75,6 +96,8 @@ async function reservationExists(req, res, next) {
   }
 }
 
+//Validator checks for that a reservation id hasn't been assigned to the requested table
+
 const hasAvailability = (req, res, next) => {
   if (res.locals.table.reservation_id !== null) {
     return next({ status: 400, message: "table is occupied" });
@@ -89,6 +112,9 @@ const hasAvailability = (req, res, next) => {
   }
   return next({ status: 400, message: "a valid capacity is required" });
 };
+
+/* returns a deleted table, destroying the table of the 
+reservation_id in the process*/
 
 async function destroy(req, res, next) {
   if (res.locals.table.reservation_id) {

@@ -15,6 +15,8 @@ export default function AddTable() {
 
   const history = useHistory();
 
+  // parses the string of capacity into a number and creates a new table, returning to dashboard
+
   async function submitHandler(event) {
     event.preventDefault();
     formData.capacity = parseInt(formData.capacity);
@@ -24,23 +26,29 @@ export default function AddTable() {
       setTablesError({});
       await createTable(formData, abortController.signal);
       history.push(`/dashboard`);
+      return () => abortController.abort();
     } catch (error) {
       setTablesError(error);
     }
   }
 
+  //returns to previous page
+
   function cancelHandler() {
     history.goBack();
   }
+
+  // changes the form data to match the name and value of the input field being used
 
   function changeHandler({ target }) {
     setFormData({ ...formData, [target.name]: target.value });
   }
 
+  // formats the page
   return (
     <>
       <nav aria-label="breadcrumb">
-        <ol className="breadcrumb">
+        <ol className="breadcrumb" style={{ backgroundColor: "#1b3e23" }}>
           <li className="breadcrumb-item">
             <Link to="/">Home</Link>
           </li>

@@ -19,6 +19,8 @@ function readReservation(reservation_id) {
   return knex("reservations").select("*").where({ reservation_id }).first();
 }
 
+// knex transactions ensures that both tables are tied together and updated simultaneously
+
 function destroy(table) {
   return knex.transaction(async (transaction) => {
     await knex("reservations")

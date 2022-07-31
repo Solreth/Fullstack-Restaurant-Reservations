@@ -28,6 +28,8 @@ async function update(updatedReservation, reservationId) {
     .then((createdRecords) => createdRecords[0]);
 }
 
+// removes the non-digits from the phone number
+
 function search(mobile_number) {
   return knex("reservations")
     .whereRaw(

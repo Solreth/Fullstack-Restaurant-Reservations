@@ -7,6 +7,10 @@ export default function FormComponent({
   reservation,
   formData,
 }) {
+  //formats the page in one of two ways dependent upon whether a
+  //reservation is sent in via the edit reservation component, or
+  //form data is sent in from the add reservation component.
+
   if (reservation) {
     return (
       <form onSubmit={submitHandler} className="container">

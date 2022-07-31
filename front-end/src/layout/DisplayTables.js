@@ -1,18 +1,22 @@
 import { finishTable } from "../utils/api";
 
 export default function DisplayTables({ tables, loadDashboard }) {
+  // retrieves the table id and uses it to mark the status of table to finished
   const finishHandler = async (event) => {
     const tableId = event.target.getAttribute("data-table-id-finish");
+    const abortController = new AbortController();
     if (
       window.confirm(
         "Is this table ready to seat new guests? This cannot be undone."
       )
     ) {
-      await finishTable(tableId);
+      await finishTable(tableId, abortController.signal);
       loadDashboard();
+      return () => abortController.abort();
     }
   };
 
+  //format the table
   return tables.map((table, index) => {
     return (
       <tr key={index}>

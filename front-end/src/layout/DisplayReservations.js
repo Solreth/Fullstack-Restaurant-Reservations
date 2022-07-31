@@ -6,6 +6,7 @@ export default function DisplayReservations({
   reservations,
   setReservationsError,
 }) {
+  // converts the status of the reservation to cancelled and removes it from the dashboard
   async function cancelHandler(event) {
     const abortController = new AbortController();
     const reservation_id = event.target.getAttribute(
@@ -29,6 +30,8 @@ export default function DisplayReservations({
       setReservationsError(error);
     }
   }
+
+  //formats the page
 
   const output = reservations.map((reservation, index) => {
     return (

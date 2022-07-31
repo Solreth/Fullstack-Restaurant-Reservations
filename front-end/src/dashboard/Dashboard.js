@@ -19,7 +19,11 @@ function Dashboard({ date, reservations, setReservations, tables, setTables }) {
   const [pageDate, setPageDate] = useState(dateQuery ? dateQuery : date);
   const history = useHistory();
 
+  // reloads the page under changes to the following variables
+
   useEffect(loadDashboard, [date, pageDate, setReservations, setTables]);
+
+  //loads the page and lists reservations and tables, utilizes an abort controller
 
   function loadDashboard() {
     const date = pageDate;
@@ -34,6 +38,8 @@ function Dashboard({ date, reservations, setReservations, tables, setTables }) {
     return () => abortController.abort();
   }
 
+  // sets the date to a day prior then pushes the reload to that date
+
   function previousHandler() {
     const date = pageDate;
     const newDate = previous(date);
@@ -41,12 +47,16 @@ function Dashboard({ date, reservations, setReservations, tables, setTables }) {
     history.push(`/dashboard?date=${newDate}`);
   }
 
+  // sets the date to a day after then pushes the reload to that date
+
   function nextHandler() {
     const date = pageDate;
     const newDate = next(date);
     setPageDate(newDate);
     history.push(`/dashboard?date=${newDate}`);
   }
+
+  //formatting the layout of the page
 
   return (
     <main>
