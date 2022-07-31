@@ -42,7 +42,7 @@ export default function FormComponent({
               />
             </div>
             <div className="form-group col">
-              <label htmlFor="mobile_number">Mobile Number</label>
+              <label htmlFor="mobile_number">Mobile #</label>
               <input
                 type="text"
                 name="mobile_number"
@@ -137,7 +137,7 @@ export default function FormComponent({
               />
             </div>
             <div className="form-group col">
-              <label htmlFor="mobile_number">Mobile Number</label>
+              <label htmlFor="mobile_number">Mobile #</label>
               <input
                 type="text"
                 name="mobile_number"

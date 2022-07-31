@@ -47,7 +47,10 @@ export default function AddReservation() {
   return (
     <>
       <nav aria-label="breadcrumb">
-        <ol className="breadcrumb" style={{ backgroundColor: "#1b3e23" }}>
+        <ol
+          className="breadcrumb"
+          style={{ backgroundColor: "#1b3e23", borderRadius: "0 0 10px 10px" }}
+        >
           <li className="breadcrumb-item">
             <Link to="/">Home</Link>
           </li>
