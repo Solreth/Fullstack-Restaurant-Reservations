@@ -49,7 +49,7 @@ const hasReservationDate = (req, res, next) => {
   const { data: { reservation_date } = {} } = req.body;
   if (reservation_date && !containsAnyLetter(reservation_date)) {
     const date = new Date(reservation_date);
-    if (date.getDay() === 1) {
+    if (date.getDay() === 2) {
       next({
         status: 400,
         message: "Sorry! We're closed on this Tuesdays! Try again!",
