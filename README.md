@@ -6,7 +6,7 @@ Documentation of the API can be found below. I built the front-end and back-end 
 
 example screenshots of the application can be found here:
 
-https://imgur.com/a/EFL7Kon
+https://imgur.com/a/iHYXWxf
 
 Make sure to run npm install before any local commands or edits
 
