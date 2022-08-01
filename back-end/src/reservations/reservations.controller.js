@@ -63,9 +63,13 @@ const hasReservationDate = (req, res, next) => {
   //  a RegEx that validates proper arrangement of date
   const dateRegex = /^20[2-9][0-9]-(0[0-9]|1[0-2])-([0-2][0-9]|3[0-1])$/;
   const today = new Date();
-  const newResDate = new Date(reservation_date);
-  const formattedDate = new Date(`${reservation_date}T${reservation_time}`);
 
+  const newResDate = new Date(reservation_date);
+  const formattedDate = new Date(
+    `${reservation_date}T${reservation_time}`
+  ).toUTCString();
+
+  console.log(formattedDate);
   if (reservation_date && !containsAnyLetter(reservation_date)) {
     // getUTCDay, 2 = Tuesday
 
@@ -75,7 +79,7 @@ const hasReservationDate = (req, res, next) => {
         message: "Sorry! We're closed on this Tuesdays! Try again!",
       });
 
-      //invalidates dates of the same day or set in the past */
+      //invalidates dates set in the past */
 
       if (!dateRegex.test(reservation_date || newResDate < today)) {
         return next({
@@ -85,6 +89,8 @@ const hasReservationDate = (req, res, next) => {
       }
       return next();
     }
+
+    // reservations must be booked at least 5 hours in the future
 
     if (Date.parse(formattedDate) < Date.now()) {
       next({
