@@ -90,7 +90,7 @@ const hasReservationDate = (req, res, next) => {
       return next();
     }
 
-    // reservations must be booked at least 5 hours in the future
+    // reservations must be booked in the future
 
     if (Date.parse(formattedDate) < Date.now()) {
       next({
