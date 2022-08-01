@@ -1,6 +1,8 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+// validates that no numbers exist
+
 function containsAnyLetter(str) {
   return /[a-zA-Z]/.test(str);
 }
@@ -56,23 +58,35 @@ const hasMobileNumber = (req, res, next) => {
 // Validator checks for data.reservation_date in the req.body.
 
 const hasReservationDate = (req, res, next) => {
-  const { data: { reservation_date } = {} } = req.body;
+  const { data: { reservation_date, reservation_time } = {} } = req.body;
+
+  //  a RegEx that validates proper arrangement of date
+  const dateRegex = /^20[2-9][0-9]-(0[0-9]|1[0-2])-([0-2][0-9]|3[0-1])$/;
+  const today = new Date();
+  const newResDate = new Date(reservation_date);
+  const formattedDate = new Date(`${reservation_date}T${reservation_time}`);
+
   if (reservation_date && !containsAnyLetter(reservation_date)) {
-    const date = new Date(reservation_date);
+    // getUTCDay, 2 = Tuesday
 
-    /*Development and local timezone requires a 1, production requires the variable to be a 2 to
-compensate for the difference in timezone.*/
-
-    if (date.getUTCDay() === 2) {
+    if (newResDate.getUTCDay() === 2) {
       next({
         status: 400,
         message: "Sorry! We're closed on this Tuesdays! Try again!",
       });
+
+      //invalidates dates of the same day or set in the past */
+
+      if (!dateRegex.test(reservation_date || newResDate < today)) {
+        return next({
+          status: 400,
+          message: `reservation_date must be present or future dates only`,
+        });
+      }
+      return next();
     }
 
-    //invalidates dates of the same day or set in the past */
-
-    if (Date.parse(reservation_date) < Date.now()) {
+    if (Date.parse(formattedDate) < Date.now()) {
       next({
         status: 400,
         message: "Try booking a reservation further in the future!",
@@ -268,8 +282,8 @@ module.exports = {
     hasFirstName,
     hasLastName,
     hasMobileNumber,
-    hasReservationDate,
     hasReservationTime,
+    hasReservationDate,
     hasPeople,
     asyncErrorBoundary(create),
   ],
@@ -279,8 +293,8 @@ module.exports = {
     hasFirstName,
     hasLastName,
     hasMobileNumber,
-    hasReservationDate,
     hasReservationTime,
+    hasReservationDate,
     hasPeople,
     asyncErrorBoundary(update),
   ],
