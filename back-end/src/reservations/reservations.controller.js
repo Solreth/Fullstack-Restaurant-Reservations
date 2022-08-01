@@ -63,7 +63,7 @@ const hasReservationDate = (req, res, next) => {
     /*Development and local timezone requires a 1, production requires the variable to be a 2 to
 compensate for the difference in timezone.*/
 
-    if (date.getDay() === 1) {
+    if (date.getUTCDay() === 2) {
       next({
         status: 400,
         message: "Sorry! We're closed on this Tuesdays! Try again!",
