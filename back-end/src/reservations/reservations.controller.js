@@ -191,7 +191,7 @@ async function reservationExists(req, res, next) {
 
 // returns a reservation from the database and sets the reservation as an accessible variable
 
-async function read(req, res, next) {
+function read(req, res, next) {
   const { reservation } = res.locals;
   res.json({ data: reservation });
 }

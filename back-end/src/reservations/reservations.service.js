@@ -30,7 +30,7 @@ async function update(updatedReservation, reservationId) {
 
 // removes the non-digits from the phone number
 
-function search(mobile_number) {
+async function search(mobile_number) {
   return knex("reservations")
     .whereRaw(
       "translate(mobile_number, '() -', '') like ?",

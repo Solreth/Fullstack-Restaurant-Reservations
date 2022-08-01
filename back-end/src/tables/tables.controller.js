@@ -129,7 +129,7 @@ module.exports = {
   update: [
     asyncErrorBoundary(tableExists),
     hasData,
-    reservationExists,
+    asyncErrorBoundary(reservationExists),
     hasAvailability,
     asyncErrorBoundary(update),
   ],
