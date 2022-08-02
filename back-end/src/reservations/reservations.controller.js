@@ -69,7 +69,6 @@ const hasReservationDate = (req, res, next) => {
     `${reservation_date}T${reservation_time}`
   ).toUTCString();
 
-  console.log(formattedDate);
   if (reservation_date && !containsAnyLetter(reservation_date)) {
     // getUTCDay, 2 = Tuesday
 
@@ -81,7 +80,7 @@ const hasReservationDate = (req, res, next) => {
 
       //invalidates dates set in the past */
 
-      if (!dateRegex.test(reservation_date || newResDate < today)) {
+      if (!dateRegex.test(newResDate < today)) {
         return next({
           status: 400,
           message: `reservation_date must be present or future dates only`,
