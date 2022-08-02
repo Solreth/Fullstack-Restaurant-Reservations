@@ -80,7 +80,7 @@ const hasReservationDate = (req, res, next) => {
 
     // reservations must be booked in the future
 
-    if (formattedDate < today) {
+    if (formattedDate.toUTCString() < today.toUTCString()) {
       next({
         status: 400,
         message: "Try booking a reservation further in the future!",
