@@ -1,11 +1,7 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-
-// validates that no numbers exist
-
-function containsAnyLetter(str) {
-  return /[a-zA-Z]/.test(str);
-}
+const dateFormat = /\d\d\d\d-\d\d-\d\d/;
+const timeFormat = /\d\d:\d\d/;
 
 // lists all the reservations. If a number is provided it lists only reservations with that number.
 async function list(req, res) {
@@ -57,63 +53,40 @@ const hasMobileNumber = (req, res, next) => {
 
 // Validator checks for data.reservation_date in the req.body.
 
-const hasReservationDate = (req, res, next) => {
-  const { data: { reservation_date, reservation_time } = {} } = req.body;
+function hasReservationDateTime(req, res, next) {
+  const { data = {} } = req.body;
+  let temp_reservation_time =
+    data["reservation_time"] && data["reservation_time"].replace(":", "");
 
-  //formats the date so it can be directly compared to a new Date() later
+  if (!timeFormat.test(data.reservation_time))
+    return next({ status: 400, message: "reservation_time field is invalid" });
+  if (!dateFormat.test(data.reservation_date))
+    return next({ status: 400, message: "reservation_date field is invalid" });
 
-  const formattedDate = new Date(`${reservation_date}T${reservation_time}`);
-  const today = new Date();
-  const newResDate = new Date(reservation_date);
-
-  if (reservation_date && !containsAnyLetter(reservation_date)) {
-    // getUTCDay, 2 = Tuesday
-
-    if (newResDate.getUTCDay() === 2) {
-      next({
-        status: 400,
-        message: "Sorry! We're closed on this Tuesdays! Try again!",
-      });
-
-      return next();
-    }
-
-    // reservations must be booked in the future
-
-    if (formattedDate.toUTCString() < today.toUTCString()) {
-      next({
-        status: 400,
-        message: "Try booking a reservation further in the future!",
-      });
-    }
-    return next();
+  if (new Date(data["reservation_date"]).getDay() + 1 === 2) {
+    next({
+      status: 400,
+      message: `The restaurant is closed on Tuesdays, please pick a day when we are open!`,
+    });
+  } else if (Date.parse(data["reservation_date"]) < Date.now()) {
+    next({
+      status: 400,
+      message: `Reservation must be for a date in the future.`,
+    });
+  } else if (temp_reservation_time < 1030) {
+    next({
+      status: 400,
+      message: "reservation_time cannot be before business hours!",
+    });
+  } else if (temp_reservation_time > 2130) {
+    next({
+      status: 400,
+      message:
+        "Reservation cannot be less than one hour before business closing!",
+    });
   }
-  return next({ status: 400, message: "a reservation_date is required" });
-};
-
-// Validator checks for data.reservation_time in the req.body
-
-const hasReservationTime = (req, res, next) => {
-  const { data: { reservation_time } = {} } = req.body;
-  if (reservation_time && !containsAnyLetter(reservation_time)) {
-    //makes certain the time is between 10:30am and 9:30pm
-    if (reservation_time.replace(":", "") < 1030) {
-      next({
-        status: 400,
-        message: "Sorry, reservations can not be made before 10:30am!",
-      });
-    }
-    if (reservation_time.replace(":", "") > 2130) {
-      next({
-        status: 400,
-        message: "Sorry, reservations can not be made after 9:30pm!",
-      });
-    } else {
-      return next();
-    }
-  }
-  return next({ status: 400, message: "a reservation_time is required" });
-};
+  next();
+}
 
 // Validator checks for data.people in the req.body
 
@@ -276,8 +249,7 @@ module.exports = {
     hasFirstName,
     hasLastName,
     hasMobileNumber,
-    hasReservationTime,
-    hasReservationDate,
+    hasReservationDateTime,
     hasPeople,
     asyncErrorBoundary(create),
   ],
@@ -287,8 +259,7 @@ module.exports = {
     hasFirstName,
     hasLastName,
     hasMobileNumber,
-    hasReservationTime,
-    hasReservationDate,
+    hasReservationDateTime,
     hasPeople,
     asyncErrorBoundary(update),
   ],
