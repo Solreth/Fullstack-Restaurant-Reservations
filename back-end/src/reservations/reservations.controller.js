@@ -71,7 +71,7 @@ function hasReservationDateTime(req, res, next) {
   } else if (Date.parse(data["reservation_date"]) < Date.now()) {
     next({
       status: 400,
-      message: `Reservation must be for a date in the future.`,
+      message: `Reservation must be made for a date further in the future.`,
     });
   } else if (temp_reservation_time < 1030) {
     next({
